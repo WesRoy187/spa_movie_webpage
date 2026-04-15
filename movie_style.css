@@ -1,46 +1,108 @@
-
-body { font-family: Arial; margin: 20px; }
-
-h1 { text-align: center; }
-
-.grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 10px;
+body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    margin: 0;
+    background-color: #121212;
+    color: #fff;
 }
 
-.movie {
-    cursor: pointer;
+/* HEADER */
+h1 {
     text-align: center;
+    padding: 20px;
+    background: #1f1f1f;
+    margin: 0;
 }
 
-img {
-    width: 100%;
-    border-radius: 8px;
-}
-
-#details {
-    margin-top: 20px;
-    border-top: 2px solid #ccc;
-    padding-top: 10px;
-}
-
-button { margin: 5px; }
-
-#loading { display: none; color: blue; }
-#error { color: red; }
-
-@media (max-width: 600px) {
-    body { margin: 10px; }
-}
-.detailimg {
-    width: 100%;
-    margin: 10px;
-    border-radius: 8px;
-}
+/* SEARCH BAR */
 .searchbar {
     text-align: center;
+    margin: 15px;
 }
-.detailtext {
+
+input, select {
+    padding: 10px;
+    width: 220px;
+    border-radius: 6px;
+    border: none;
+    margin-right: 5px;
+}
+
+button {
+    padding: 10px 15px;
+    border: none;
+    background: #e50914;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+}
+/* favorite button background */
+.fav-btn {
+    background-color: lightgray;
+}
+
+button:hover {
+    background: #ff2a2a;
+}
+
+/* GRID */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 15px;
+    padding: 15px;
+}
+
+/* MOVIE CARD */
+.movie {
+    background: #1e1e1e;
+    padding: 10px;
+    border-radius: 10px;
+    transition: 0.3s;
+}
+
+.movie:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+}
+
+.movie img {
+    width: 100%;
+    border-radius: 8px;
+}
+
+.movie p {
+    margin: 5px 0;
+    font-size: 14px;
+}
+
+/* DETAILS */
+#details {
+    background: #1e1e1e;
+    margin: 20px;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+/* LOADING */
+#loading {
     text-align: center;
+    color: #00bfff;
+}
+
+/* ERROR */
+#error {
+    text-align: center;
+    color: red;
+}
+
+/* MOBILE */
+@media (max-width: 600px) {
+    .grid {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    }
+}
+/* Pagination spacing for boxes */
+.pagination-box {
+    margin: 10px;
+    
 }
