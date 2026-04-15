@@ -1,7 +1,24 @@
+$(document).ready(function () {
 const API_KEY = "50d00169b40a3b13b0144f1dde8aad81";
 let currentPage = 1;
 let currentQuery = "";
 let currentGenre = "";
+
+$(document).on("click", ".movie", function () {
+    let id = $(this).data("id");
+    getDetails(id);
+});
+
+$(document).on("click", ".fav-btn", function (e) {
+    e.stopPropagation();
+    let parent = $(this).closest(".movie");
+
+    let id = parent.data("id");
+    let title = parent.data("title");
+    let poster = parent.data("poster");
+
+    addFavorite(id, title, poster);
+});
 
 // SHOW LOADING
 function showLoading(show) {
@@ -58,10 +75,14 @@ function displayMovies(movies) {
 
     movies.slice(0, 10).forEach(movie => {
         $("#results").append(`
-            <div class="movie">
-                <img src="https://image.tmdb.org/t/p/w200${movie.poster_path}" onclick="getDetails(${movie.id})">
+            <div class="movie" 
+                 data-id="${movie.id}" 
+                 data-title="${movie.title}" 
+                 data-poster="${movie.poster_path}">
+                 
+                <img src="https://image.tmdb.org/t/p/w200${movie.poster_path}">
                 <p>${movie.title}</p>
-                <button onclick="addFavorite(${movie.id}, '${movie.title}', '${movie.poster_path}')">❤️</button>
+                <button class="fav-btn">❤️</button>
             </div>
         `);
     });
@@ -72,7 +93,7 @@ function setupPagination(total) {
     $("#pagination").empty();
 
     for (let i = 1; i <= total; i++) {
-        $("#pagination").append(`<button onclick="goPage(${i})">${i}</button>`);
+        $("#pagination").append(`<button onclick="goPage(${i})" class="pagination-box">${i}</button>`);
     }
 }
 
@@ -144,7 +165,7 @@ function loadFavorites() {
 
     favs.forEach(movie => {
         $("#favorites").append(`
-            <div class="movie">
+            <div class="movie" data-id="${movie.id}">
                 <img src="https://image.tmdb.org/t/p/w200${movie.poster}" onclick="getDetails(${movie.id})">
                 <p>${movie.title}</p>
             </div>
@@ -161,7 +182,7 @@ function loadPopular() {
             $("#popular").empty();
             data.results.slice(0, 10).forEach(movie => {
                 $("#popular").append(`
-                    <div class="movie">
+                    <div class="movie" data-id="${movie.id}">
                         <img src="https://image.tmdb.org/t/p/w200${movie.poster_path}" onclick="getDetails(${movie.id})">
                         <p>${movie.title}</p>
                     </div>
@@ -185,3 +206,4 @@ function loadGenres() {
 loadGenres();
 loadPopular();
 loadFavorites();
+});
