@@ -1,0 +1,1 @@
+This page was created by Sienna and Wes for KSU group term project for the use of making a SPA website for a movie database that users can access. Styling was inspired by Netflix, background shading design was designed to put more attention on movie images as well as texts. 
