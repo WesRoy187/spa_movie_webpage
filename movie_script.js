@@ -1,23 +1,23 @@
 $(document).ready(function () {
-const API_KEY = "50d00169b40a3b13b0144f1dde8aad81";
-let currentPage = 1;
-let currentQuery = "";
-let currentGenre = "";
+    const API_KEY = "2af62c87ccbc22561dadf5a4181f811c";
+    let currentPage = 1;
+    let currentQuery = "";
+    let currentGenre = "";
 
-$(document).on("click", ".movie", function () {
-    let id = $(this).data("id");
-    getDetails(id);
-});
+    $(document).on("click", ".movie", function () {
+        let id = $(this).data("id");
+        getDetails(id);
+    });
 
-$(document).on("click", ".fav-btn", function (e) {
-    e.stopPropagation();
-    let parent = $(this).closest(".movie");
+    $(document).on("click", ".fav-btn", function (e) {
+        e.stopPropagation();
+        let parent = $(this).closest(".movie");
 
-    let id = parent.data("id");
-    let title = parent.data("title");
-    let poster = parent.data("poster");
+        let id = parent.data("id");
+        let title = parent.data("title");
+        let poster = parent.data("poster");
 
-    addFavorite(id, title, poster);
+        addFavorite(id, title, poster);
 });
 
 // SHOW LOADING
@@ -67,6 +67,7 @@ function fetchMovies() {
         })
         .fail(() => showError("Failed to load data"))
         .always(() => showLoading(false));
+    
 }
 
 // DISPLAY MOVIES
@@ -86,6 +87,8 @@ function displayMovies(movies) {
             </div>
         `);
     });
+
+    
 }
 
 // PAGINATION
@@ -93,8 +96,13 @@ function setupPagination(total) {
     $("#pagination").empty();
 
     for (let i = 1; i <= total; i++) {
-        $("#pagination").append(`<button onclick="goPage(${i})" class="pagination-box">${i}</button>`);
+        $("#pagination").append(`<button class="page-btn" data-page="${i}">${i}</button>`);
+            $(document).on("click", ".page-btn", function () {
+                let page = $(this).data("page");
+                goPage(page);
+        });
     }
+
 }
 
 function goPage(page) {
@@ -145,6 +153,7 @@ function getDetails(id) {
     }).always(() => {
         showLoading(false);
     });
+    
 }
 
 // FAVORITES (localStorage)
@@ -156,6 +165,7 @@ function addFavorite(id, title, poster) {
         localStorage.setItem("favorites", JSON.stringify(favs));
         loadFavorites();
     }
+    
 }
 
 function loadFavorites() {
@@ -166,29 +176,38 @@ function loadFavorites() {
     favs.forEach(movie => {
         $("#favorites").append(`
             <div class="movie" data-id="${movie.id}">
-                <img src="https://image.tmdb.org/t/p/w200${movie.poster}" onclick="getDetails(${movie.id})">
+                <img src="https://image.tmdb.org/t/p/w200${movie.poster}">
                 <p>${movie.title}</p>
             </div>
         `);
     });
+    
 }
 
 // LOAD POPULAR
 function loadPopular() {
+    console.log("Loading movies...");
     showLoading(true);
 
     $.getJSON(`https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}`)
         .done(data => {
             $("#popular").empty();
+
             data.results.slice(0, 10).forEach(movie => {
+
+                let poster = movie.poster_path
+                    ? `https://image.tmdb.org/t/p/w200${movie.poster_path}`
+                    : "https://via.placeholder.com/200x300?text=No+Image";
+
                 $("#popular").append(`
                     <div class="movie" data-id="${movie.id}">
-                        <img src="https://image.tmdb.org/t/p/w200${movie.poster_path}" onclick="getDetails(${movie.id})">
+                        <img src="${poster}">
                         <p>${movie.title}</p>
                     </div>
                 `);
             });
         })
+        .fail(() => showError("Failed to load popular movies"))
         .always(() => showLoading(false));
 }
 
@@ -200,6 +219,8 @@ function loadGenres() {
                 $("#genreSelect").append(`<option value="${g.id}">${g.name}</option>`);
             });
         });
+
+    
 }
 
 // INIT
